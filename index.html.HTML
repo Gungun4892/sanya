@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="hi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Kurban! 🎂🎉</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Great+Vibes&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#FFD700',
+                        partyPurple: '#2A0845',
+                        deepViolet: '#6441A5',
+                        neonPink: '#FF007F'
+                    },
+                    fontFamily: {
+                        heading: ['"Great Vibes"', 'cursive'],
+                        fun: ['"Fredoka"', 'sans-serif'],
+                        sans: ['"Poppins"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Keyframe Animations & Styles */
+        body {
+            background: linear-gradient(135deg, #120224 0%, #2A0845 50%, #15002b 100%);
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glowing Text Effect */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 0, 127, 0.5), 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        /* 3D Cake Design */
+        .cake-container {
+            position: relative;
+            width: 260px;
+            height: 240px;
+            margin: 0 auto;
+        }
+        .plate {
+            width: 280px;
+            height: 18px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 0;
+            left: -10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 -3px 0 #cbd5e1;
+        }
+        .layer {
+            position: absolute;
+            width: 100%;
+            border-radius: 15px 15px 10px 10px;
+            box-shadow: inset 0 5px 0 rgba(255,255,255,0.2), inset 0 -8px 0 rgba(0,0,0,0.2);
+        }
+        .layer-bottom {
+            bottom: 18px;
+            height: 70px;
+            background: linear-gradient(to right, #8a2be2, #c71585);
+        }
+        .layer-middle {
+            bottom: 80px;
+            height: 60px;
+            width: 80%;
+            left: 10%;
+            background: linear-gradient(to right, #ff1493, #ff69b4);
+        }
+        .layer-top {
+            bottom: 135px;
+            height: 50px;
+            width: 60%;
+            left: 20%;
+            background: linear-gradient(to right, #ffd700, #ffaa00);
+        }
+        .icing {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 15px;
+            background: #ffffff;
+            border-radius: 10px 10px 8px 8px;
+            opacity: 0.9;
+        }
+        
+        /* Candle & Flame */
+        .candle {
+            width: 14px;
+            height: 45px;
+            background: repeating-linear-gradient(45deg, #38ef7d, #38ef7d 5px, #ffffff 5px, #ffffff 10px);
+            position: absolute;
+            bottom: 182px;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .candle-1 { left: 30%; }
+        .candle-2 { left: 48%; }
+        .candle-3 { left: 66%; }
+
+        .flame {
+            width: 16px;
+            height: 24px;
+            background: linear-gradient(to bottom, #ffff00 0%, #ff4500 100%);
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -22px;
+            left: -1px;
+            animation: flicker 0.6s infinite alternate ease-in-out;
+            box-shadow: 0 0 15px #ff4500, 0 0 25px #ffff00;
+        }
+
+        .flame.off {
+            display: none;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); opacity: 1; }
+            100% { transform: scale(1.15) rotate(2deg); opacity: 0.85; }
+        }
+
+        /* Polaroid Photo Frame */
+        .polaroid {
+            background: #ffffff;
+            padding: 14px 14px 30px 14px;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.6);
+            transform: rotate(-3deg);
+            transition: all 0.4s ease;
+        }
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.03);
+            box-shadow: 0 25px 40px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Floating Balloon Styling */
+        .balloon {
+            position: fixed;
+            bottom: -100px;
+            width: 50px;
+            height: 65px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            z-index: 40;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 23px;
+            width: 2px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen">
+
+    <!-- Background Canvas for Interactive Fireworks/Stars -->
+    <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Top Music & Voice Control Bar -->
+    <header class="relative z-30 p-4 flex flex-wrap justify-between items-center max-w-6xl mx-auto gap-4">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl">🎉</span>
+            <span class="font-fun text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-pink-500">Kurban's B'Day Hub</span>
+        </div>
+        
+        <!-- Audio & Voice Control Buttons -->
+        <div class="flex flex-wrap items-center gap-3">
+            <!-- Audio Track Selector -->
+            <select id="trackSelect" class="bg-purple-900/80 border border-purple-400/40 text-xs text-white rounded-full px-3 py-2 outline-none cursor-pointer">
+                <option value="tune">🎹 Cute Melodic Tune</option>
+                <option value="song1">🎶 Happy Birthday Piano Melody</option>
+                <option value="song2">🎷 Soothing Celebration Beats</option>
+            </select>
+
+            <!-- Play Music Button -->
+            <button id="musicToggle" class="flex items-center space-x-2 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full text-xs font-bold transition duration-300 shadow-lg hover:scale-105">
+                <i id="musicIcon" class="fas fa-music text-yellow-300"></i>
+                <span id="musicText">Play Music 🎵</span>
+            </button>
+
+            <!-- Sweet Voice Wishing Toggle -->
+            <button id="voiceWishBtn" class="flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 border border-yellow-300 px-4 py-2 rounded-full text-xs font-extrabold transition duration-300 shadow-lg hover:scale-105">
+                <i class="fas fa-volume-up text-purple-900"></i>
+                <span id="voiceText">Hear Sweet Greeting 🗣️</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="relative z-10 max-w-5xl mx-auto px-4 py-6 space-y-16">
+
+        <!-- HERO / GREETING SECTION -->
+        <section class="text-center space-y-6 pt-4">
+            <div class="inline-block bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30 rounded-full px-6 py-2 backdrop-blur-sm animate-pulse">
+                <span class="text-yellow-300 text-sm font-semibold tracking-widest uppercase">✨ Special Birthday Celebration ✨</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold font-fun tracking-tight">
+                HAPPY BIRTHDAY <br>
+                <span class="font-heading text-6xl md:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 glow-text block mt-2">
+                    KURBAN!
+                </span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-purple-200 max-w-2xl mx-auto font-light leading-relaxed">
+                Aapke is khas din par, hum sabki taraf se aapko bohot bohot mubarakbaad! Aaj ki raat sirf aapke naam... 🥳🥂
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 pt-4">
+                <button id="blastPopperBtn" class="bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 font-bold px-7 py-3.5 rounded-full shadow-lg hover:shadow-yellow-500/50 hover:scale-105 transition transform flex items-center space-x-2">
+                    <i class="fas fa-gift text-lg"></i>
+                    <span>Blast Confetti! 🎉</span>
+                </button>
+                <button id="openCardModalBtn" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold px-7 py-3.5 rounded-full shadow-lg hover:shadow-pink-500/50 hover:scale-105 transition transform flex items-center space-x-2">
+                    <i class="fas fa-envelope-open-text text-lg"></i>
+                    <span>Open Special Wish Card 💌</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- PHOTO GALLERY / BIRTHDAY BOY SHOWCASE -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white/5 border border-white/10 rounded-3xl p-6 md:p-10 backdrop-blur-md">
+            
+            <!-- Polaroid Image Frame -->
+            <div class="md:col-span-5 flex justify-center">
+                <div class="polaroid relative group">
+                    <!-- Badge -->
+                    <div class="absolute -top-3 -right-3 z-20 bg-gradient-to-r from-yellow-400 to-red-500 text-gray-900 font-bold text-xs px-3 py-1 rounded-full shadow-md transform rotate-12">
+                        ⭐ Birthday Star
+                    </div>
+                    
+                    <div class="overflow-hidden rounded bg-gray-100 w-64 h-72 relative">
+                        <img
+    id="kurbanPhoto"
+    src="kurban.jpeg"
+    alt="Kurban Birthday Star"
+    class="w-full h-full object-cover"
+>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <p class="font-heading text-3xl text-gray-800 font-bold">Kurban</p>
+                        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">The Birthday Legend 😎</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Showcase Bio & Warm Words -->
+            <div class="md:col-span-7 space-y-4">
+                <span class="bg-yellow-400/20 text-yellow-300 text-xs font-semibold px-3 py-1 rounded-full border border-yellow-400/30">
+                    👑 Spotlight On Kurban
+                </span>
+                <h2 class="text-3xl font-bold font-fun text-white">The Man Of The Moment!</h2>
+                <p class="text-purple-200 leading-relaxed">
+                    Kurban bhai, aapke smile aur aapki dosti hamesha sabka dil jeet leti hai. Is naye saal mein aapko dher saari kamyabi, achhi health aur behisaab khushiyan milein! 🌟
+                </p>
+
+                <!-- Audio Quick Play Card -->
+                <div class="bg-purple-900/40 border border-purple-400/30 p-4 rounded-2xl flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-300 font-bold">
+                            <i class="fas fa-volume-high animate-bounce"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400">Voice Greeting Status</p>
+                            <p id="voiceStatusText" class="text-xs font-semibold text-yellow-300">Click to play sweet voice greeting!</p>
+                        </div>
+                    </div>
+                    <button id="quickVoiceBtn" class="bg-pink-500 hover:bg-pink-600 text-white text-xs font-bold px-4 py-2 rounded-full transition shadow">
+                        Listen Voice 🎧
+                    </button>
+                </div>
+
+                <!-- Fun Highlights Badges -->
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <div class="bg-purple-900/50 border border-purple-500/30 p-3 rounded-xl flex items-center space-x-3">
+                        <span class="text-2xl">⚡</span>
+                        <div>
+                            <p class="text-xs text-gray-400">Vibe Level</p>
+                            <p class="font-bold text-sm text-yellow-300">100% Unlimited</p>
+                        </div>
+                    </div>
+                    <div class="bg-purple-900/50 border border-purple-500/30 p-3 rounded-xl flex items-center space-x-3">
+                        <span class="text-2xl">🔥</span>
+                        <div>
+                            <p class="text-xs text-gray-400">Style Quote</p>
+                            <p class="font-bold text-sm text-pink-300">Always Ready To Shine</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE BIRTHDAY CAKE & CANDLE BLOWING -->
+        <section class="bg-gradient-to-b from-purple-900/40 to-black/40 border border-purple-500/20 rounded-3xl p-8 text-center backdrop-blur-md relative overflow-hidden">
+            <h2 class="text-3xl font-bold font-fun text-yellow-300 mb-2">Interactive Birthday Cake 🎂</h2>
+            <p class="text-purple-200 text-sm mb-8">Click on candles or use the button below to blow out the flames!</p>
+
+            <!-- Cake Widget -->
+            <div class="py-6 relative">
+                <div class="cake-container">
+                    <!-- Candles with flames -->
+                    <div class="candle candle-1" title="Click to blow!">
+                        <div class="flame"></div>
+                    </div>
+                    <div class="candle candle-2" title="Click to blow!">
+                        <div class="flame"></div>
+                    </div>
+                    <div class="candle candle-3" title="Click to blow!">
+                        <div class="flame"></div>
+                    </div>
+
+                    <!-- Cake Layers -->
+                    <div class="layer layer-top">
+                        <div class="icing"></div>
+                    </div>
+                    <div class="layer layer-middle">
+                        <div class="icing"></div>
+                    </div>
+                    <div class="layer layer-bottom">
+                        <div class="icing"></div>
+                    </div>
+                    <div class="plate"></div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row justify-center items-center gap-4">
+                <button id="blowCandlesBtn" class="bg-gradient-to-r from-teal-400 to-emerald-500 text-gray-900 font-extrabold px-6 py-3 rounded-full shadow-lg hover:scale-105 transition">
+                    💨 Blow Candles & Make a Wish!
+                </button>
+                <button id="reLightCandlesBtn" class="bg-white/10 border border-white/20 text-white font-semibold px-5 py-3 rounded-full hover:bg-white/20 transition text-sm">
+                    🔥 Relight Candles
+                </button>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE WISH BOX SECTION -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <!-- Form to Leave Wishes -->
+            <div class="md:col-span-5 bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-md flex flex-col justify-between">
+                <div>
+                    <h3 class="text-2xl font-bold font-fun text-pink-400 mb-2">Leave a Wish for Kurban ✍️</h3>
+                    <p class="text-xs text-purple-200 mb-4">Aapka wish yahan real-time add ho jayega!</p>
+                    
+                    <form id="wishForm" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">Aapka Naam (Your Name)</label>
+                            <input type="text" id="wishName" placeholder="E.g., Rahul / Best Friend" required class="w-full bg-black/40 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-yellow-400 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">Aapka Pyara Message</label>
+                            <textarea id="wishMessage" rows="3" placeholder="Happy Birthday Kurban! Hamesha aise hi muskuraate raho..." required class="w-full bg-black/40 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-yellow-400 transition"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 rounded-xl hover:opacity-90 transition shadow-lg">
+                            Post Wish 🎈
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Wishes Display Board -->
+            <div class="md:col-span-7 bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-md">
+                <h3 class="text-2xl font-bold font-fun text-yellow-300 mb-4 flex items-center justify-between">
+                    <span>Birthday Wishes Wall 💖</span>
+                    <span id="wishCount" class="text-xs bg-pink-500/20 text-pink-300 border border-pink-500/30 px-3 py-1 rounded-full">3 Wishes</span>
+                </h3>
+
+                <div id="wishesList" class="space-y-3 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- Pre-loaded Default Wishes -->
+                    <div class="bg-purple-900/30 border border-purple-500/20 p-4 rounded-2xl">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-yellow-400 text-sm">Abid</span>
+                            <span class="text-xs text-gray-400">Just Now</span>
+                        </div>
+                        <p class="text-xs text-purple-100 italic">"Happy Birthday Kurban bhai! Party hard aur hamesha khush raho! 🚀🔥"</p>
+                    </div>
+
+                    <div class="bg-purple-900/30 border border-purple-500/20 p-4 rounded-2xl">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-pink-400 text-sm">Faheem</span>
+                            <span class="text-xs text-gray-400">1 hour ago</span>
+                        </div>
+                        <p class="text-xs text-purple-100 italic">"Many many happy returns of the day Kurban! May God fulfill all your dreams!"</p>
+                    </div>
+
+                    <div class="bg-purple-900/30 border border-purple-500/20 p-4 rounded-2xl">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-teal-300 text-sm">Javed</span>
+                            <span class="text-xs text-gray-400">2 hours ago</span>
+                        </div>
+                        <p class="text-xs text-purple-100 italic">"Bhai ko birthday ki bohot bohot badhaiyan! Treat kahan hai jaldi batao 🍕🎂"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 text-center py-8 text-xs text-purple-300 border-t border-white/10 mt-16">
+        <p>Crafted with ❤️ for <span class="text-yellow-400 font-bold">Kurban's Birthday Celebration</span></p>
+    </footer>
+
+    <!-- SPECIAL BIRTHDAY CARD MODAL -->
+    <div id="cardModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden transition-opacity">
+        <div class="bg-gradient-to-b from-purple-900 to-slate-900 border border-yellow-400/40 w-full max-w-lg rounded-3xl p-6 md:p-8 relative shadow-2xl text-center transform scale-95 transition-transform duration-300">
+            <!-- Close Button -->
+            <button id="closeCardModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl p-2">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="text-5xl mb-3">💌</div>
+            <h3 class="font-heading text-4xl text-yellow-300 mb-2 glow-text">Kurban Ke Liye Khaas Paigham</h3>
+            <p class="text-xs text-pink-300 uppercase tracking-widest mb-4">A Special Birthday Letter</p>
+
+            <div class="bg-black/40 border border-white/10 rounded-2xl p-5 text-left text-purple-100 space-y-3 text-sm leading-relaxed max-h-60 overflow-y-auto">
+                <p>Dear <strong>Kurban</strong>,</p>
+                <p>Aaj aapka birthday hai aur yeh din hum sabke liye bohot khaas hai. Aapka positive attitude aur doston ke liye hamesha khade rehne ki aadat sabko bohot pasand hai.</p>
+                <p>Dua hai ki aapka aane wala yeh saal nayi kamyabiyon, achhi sehat aur bemisaal khushiyon se bhara rahe! 🎈🌟</p>
+                <p class="text-right font-heading text-2xl text-yellow-400 pt-2">~ Happy Birthday Kurban!</p>
+            </div>
+
+            <button id="modalBlastBtn" class="mt-6 w-full bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 font-extrabold py-3 rounded-full shadow-lg hover:scale-105 transition">
+                Celebrate Kurban! 🚀✨
+            </button>
+        </div>
+    </div>
+
+    <!-- Hidden Real HTML5 Audio Streams (Fallback/Music Tracks) -->
+    <audio id="bgTrack1" loop src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b9d6a3bf.mp3?filename=happy-birthday-15220.mp3"></audio>
+    <audio id="bgTrack2" loop src="https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f60485.mp3?filename=soothing-background-126285.mp3"></audio>
+
+    <!-- JAVASCRIPT & JQUERY LOGIC -->
+    <script>
+        $(document.documentElement).ready(function() {
+            
+            // --- 1. Real Audio Player & Web Audio Synthesizer Engine ---
+            let audioCtx = null;
+            let isPlayingMusic = false;
+            let soundInterval = null;
+            let currentTrack = 'tune'; // 'tune', 'song1', 'song2'
+
+            const audioSong1 = document.getElementById('bgTrack1');
+            const audioSong2 = document.getElementById('bgTrack2');
+
+            function getAudioContext() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                return audioCtx;
+            }
+
+            function playSynthNote(freq, duration) {
+                const ctx = getAudioContext();
+                try {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + duration);
+                } catch(e){}
+            }
+
+            // Birthday Tune Frequencies
+            const tuneNotes = [
+                264, 264, 297, 264, 352, 330,
+                264, 264, 297, 264, 396, 352,
+                264, 264, 528, 440, 352, 330, 297,
+                466, 466, 440, 352, 396, 352
+            ];
+
+            function startMusic() {
+                isPlayingMusic = true;
+                $('#musicText').text('Pause Music ⏸️');
+                $('#musicIcon').addClass('animate-spin');
+
+                currentTrack = $('#trackSelect').val();
+
+                if (currentTrack === 'tune') {
+                    audioSong1.pause();
+                    audioSong2.pause();
+                    let index = 0;
+                    soundInterval = setInterval(() => {
+                        playSynthNote(tuneNotes[index], 0.35);
+                        index = (index + 1) % tuneNotes.length;
+                    }, 400);
+                } else if (currentTrack === 'song1') {
+                    clearInterval(soundInterval);
+                    audioSong2.pause();
+                    audioSong1.play().catch(e => console.log('Audio playback prevented'));
+                } else if (currentTrack === 'song2') {
+                    clearInterval(soundInterval);
+                    audioSong1.pause();
+                    audioSong2.play().catch(e => console.log('Audio playback prevented'));
+                }
+            }
+
+            function stopMusic() {
+                isPlayingMusic = false;
+                clearInterval(soundInterval);
+                audioSong1.pause();
+                audioSong2.pause();
+                $('#musicText').text('Play Music 🎵');
+                $('#musicIcon').removeClass('animate-spin');
+            }
+
+            $('#musicToggle').on('click', function() {
+                if (isPlayingMusic) {
+                    stopMusic();
+                } else {
+                    startMusic();
+                }
+            });
+
+            $('#trackSelect').on('change', function() {
+                if (isPlayingMusic) {
+                    stopMusic();
+                    startMusic();
+                }
+            });
+
+            // --- 2. Sweet Voice Greeting (Web Speech API AI Voice) ---
+            let isSpeaking = false;
+
+            function speakSweetVoiceWish() {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel(); // Stop ongoing speech if any
+
+                    const wishText = "Happy Birthday Kurban! Wishing you a wonderful day filled with immense joy, laughter, good health, and endless success!";
+                    const utterance = new SpeechSynthesisUtterance(wishText);
+
+                    // Try selecting a sweet female or standard pleasant voice
+                    const voices = window.speechSynthesis.getVoices();
+                    let selectedVoice = voices.find(v => v.name.includes('Google US English') || v.name.includes('Samantha') || v.name.includes('Female') || v.name.includes('Zira') || v.lang.includes('en-US'));
+
+                    if (selectedVoice) {
+                        utterance.voice = selectedVoice;
+                    }
+
+                    utterance.pitch = 1.3; // Cute/Sweet voice pitch tuning
+                    utterance.rate = 0.95; // Friendly cadence pace
+
+                    utterance.onstart = function() {
+                        isSpeaking = true;
+                        $('#voiceText').text('Speaking Wish... 🔊');
+                        $('#voiceStatusText').text('Speaking now: "Happy Birthday Kurban! ✨"');
+                    };
+
+                    utterance.onend = function() {
+                        isSpeaking = false;
+                        $('#voiceText').text('Hear Sweet Greeting 🗣️');
+                        $('#voiceStatusText').text('Finished playing! Click to replay.');
+                    };
+
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    alert("Speech synthesizer is not supported in this browser.");
+                }
+            }
+
+            $('#voiceWishBtn, #quickVoiceBtn').on('click', function() {
+                speakSweetVoiceWish();
+            });
+
+
+            // --- 3. Sound Effects (Balloon Pop & Candle Blow) ---
+            function playPopSound() {
+                const ctx = getAudioContext();
+                try {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(450, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.12);
+                } catch(e){}
+            }
+
+            function playBlowSound() {
+                const ctx = getAudioContext();
+                try {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(140, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(35, ctx.currentTime + 0.5);
+                    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.5);
+                } catch(e){}
+            }
+
+
+            // --- 4. Confetti & Firework Functions ---
+            function triggerConfetti() {
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                }
+            }
+
+            function triggerMegaConfetti() {
+                if (typeof confetti === 'function') {
+                    const duration = 3 * 1000;
+                    const animationEnd = Date.now() + duration;
+                    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+                    const interval = setInterval(function() {
+                        const timeLeft = animationEnd - Date.now();
+                        if (timeLeft <= 0) {
+                            return clearInterval(interval);
+                        }
+                        const particleCount = 50 * (timeLeft / duration);
+                        confetti({ ...defaults, particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } });
+                    }, 250);
+                }
+            }
+
+            $('#blastPopperBtn').on('click', function() {
+                triggerMegaConfetti();
+            });
+
+
+            // --- 5. Interactive Cake & Candle Blowing ---
+            $('.candle').on('click', function() {
+                $(this).find('.flame').toggleClass('off');
+                playBlowSound();
+                checkCandles();
+            });
+
+            $('#blowCandlesBtn').on('click', function() {
+                $('.flame').addClass('off');
+                playBlowSound();
+                triggerMegaConfetti();
+            });
+
+            $('#reLightCandlesBtn').on('click', function() {
+                $('.flame').removeClass('off');
+            });
+
+            function checkCandles() {
+                const totalCandles = $('.flame').length;
+                const offCandles = $('.flame.off').length;
+                if (totalCandles === offCandles) {
+                    triggerMegaConfetti();
+                }
+            }
+
+
+            // --- 6. Wishes Submission ---
+            $('#wishForm').on('submit', function(e) {
+                e.preventDefault();
+                const name = $('#wishName').val().trim();
+                const msg = $('#wishMessage').val().trim();
+
+                if (name && msg) {
+                    const wishHTML = `
+                        <div class="bg-purple-900/40 border border-yellow-400/30 p-4 rounded-2xl animate-bounce">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-yellow-300 text-sm">${escapeHtml(name)}</span>
+                                <span class="text-xs text-gray-400">Just Now</span>
+                            </div>
+                            <p class="text-xs text-purple-100 italic">"${escapeHtml(msg)}"</p>
+                        </div>
+                    `;
+                    $('#wishesList').prepend(wishHTML);
+                    $('#wishForm')[0].reset();
+                    triggerConfetti();
+
+                    const currentCount = $('#wishesList > div').length;
+                    $('#wishCount').text(`${currentCount} Wishes`);
+                }
+            });
+
+            function escapeHtml(text) {
+                return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            }
+
+
+            // --- 7. Modal Wish Card ---
+            $('#openCardModalBtn').on('click', function() {
+                $('#cardModal').removeClass('hidden').addClass('flex');
+                triggerConfetti();
+            });
+
+            $('#closeCardModalBtn').on('click', function() {
+                $('#cardModal').addClass('hidden').removeClass('flex');
+            });
+
+            $('#modalBlastBtn').on('click', function() {
+                triggerMegaConfetti();
+                $('#cardModal').addClass('hidden').removeClass('flex');
+            });
+
+
+            // --- 8. Floating Balloons Generator ---
+            const colors = ['#FF007F', '#FFD700', '#00E5FF', '#76FF03', '#E040FB'];
+            function createBalloon() {
+                const balloon = $('<div class="balloon"></div>');
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const randomLeft = Math.random() * 90;
+                const randomSpeed = 6000 + Math.random() * 4000;
+
+                balloon.css({
+                    backgroundColor: randomColor,
+                    left: randomLeft + 'vw'
+                });
+
+                $('body').append(balloon);
+
+                balloon.on('click', function() {
+                    playPopSound();
+                    triggerConfetti();
+                    $(this).remove();
+                });
+
+                balloon.animate({
+                    bottom: '115vh'
+                }, randomSpeed, 'linear', function() {
+                    $(this).remove();
+                });
+            }
+
+            setInterval(createBalloon, 2200);
+
+
+            // --- 9. Background Twinkling Canvas Effect ---
+            const canvas = document.getElementById('bgCanvas');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            $(window).on('resize', resizeCanvas);
+
+            for(let i = 0; i < 60; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2,
+                    alpha: Math.random(),
+                    speed: 0.01 + Math.random() * 0.02
+                });
+            }
+
+            function drawStars() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(star => {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 215, 0, ${star.alpha})`;
+                    ctx.fill();
+
+                    star.alpha += star.speed;
+                    if(star.alpha > 1 || star.alpha < 0) {
+                        star.speed = -star.speed;
+                    }
+                });
+                requestAnimationFrame(drawStars);
+            }
+            drawStars();
+
+            // Initial celebratory blast
+            setTimeout(() => {
+                triggerConfetti();
+            }, 600);
+        });
+    </script>
+</body>
+</html>
